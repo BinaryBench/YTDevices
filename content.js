@@ -33,21 +33,20 @@ function doAtStart()
 
 function doAtLoad()
 {
-
-    if (audioOutputDropdown != null && document.getElementById("audioOutputDropdown") != null)
+    if (audioOutputDropdown !== null && document.getElementById("audioOutputDropdown") !== null)
         return;
-
-    console.log('Select', audioOutputDropdown);
 
     // Initialize Local Vars
     videoElement = document.getElementsByClassName("video-stream")[0];
 
     // Inject elements into page
-    var appendElement = document.getElementById("watch-header");
+    var appendElement = document.getElementById("meta");
+    if (appendElement === null)
+        appendElement = document.getElementById("watch-header");
 
-    if (appendElement == null)
+    if (appendElement === null)
     {
-        console.log("Unable to find 'watch-header' element!");
+        //console.log("Unable to find 'watch-header' element!");
         return false;
     }
 
@@ -64,7 +63,7 @@ function doAtLoad()
      <div class="select">
      <label for="audioOutput">Audio output destination: </label><select id="audioOutput"></select>
      </div>
-    */
+     */
 
     audioOutputDropdown = select;
 
@@ -74,7 +73,7 @@ function doAtLoad()
 
 function populateDropdown()
 {
-    if (audioOutputDropdown == undefined || audioOutputDropdown == null)
+    if (audioOutputDropdown === undefined || audioOutputDropdown === null)
     {
         console.log("Select option is undefined!");
         return false;
@@ -84,11 +83,11 @@ function populateDropdown()
         audioOutputDropdown.removeChild(audioOutputDropdown.firstChild);
     }
 
-    if (audioDevices == null)
+    if (audioDevices === null)
     {
         addOption(null, 'Unable to access output devices');
     }
-    else if (audioDevices.length == 0)
+    else if (audioDevices.length === 0)
     {
         addOption(null, 'No audio devices found');
     }
@@ -98,7 +97,7 @@ function populateDropdown()
             var audioDevice = audioDevices[i];
             addOption(audioDevice.value, audioDevice.label);
         }
-        if (selectedAudioDevice != null)
+        if (selectedAudioDevice !== null)
         {
             audioOutputDropdown.value = selectedAudioDevice;
         }
@@ -120,9 +119,6 @@ function changeAudioDestination() {
     attachSinkId(videoElement, selectedAudioDevice);
 }
 
-
-
-
 function loadDevices(deviceInfos) {
 
     selectedAudioDevice = null;
@@ -140,7 +136,7 @@ function loadDevices(deviceInfos) {
 
             var deviceLabel = deviceInfo.label || 'speaker ' + (audioDevices.length + 1);
 
-            if (audioDevices.length == 0)
+            if (audioDevices.length === 0)
                 deviceLabel = "Select output device (" + deviceLabel + ")";
 
             audioDevices.push(
@@ -188,22 +184,22 @@ if (bodyObserver) bodyObserver.disconnect();
 
 bodyObserver = new MutationObserver(function (mutations) {
     mutations.forEach(function (mutation) {
-        if (mutation.attributeName && mutation.attributeName == 'class') {
+
+        if (mutation.attributeName && mutation.attributeName === 'style') {
 
             var host = document.location.host;
-            var isYouTube_host = (host.substr(host.length - 11) == 'youtube.com' && host != 'm.youtube.com');
-            var isYouTube_target = ((mutation.target.baseURI).match("youtube.com") != null);
+            var isYouTube_host = (host.substr(host.length - 11) === 'youtube.com' && host !== 'm.youtube.com');
+            var isYouTube_target = ((mutation.target.baseURI).match("youtube.com") !== null);
 
             if (mutation && mutation.target && isYouTube_host && isYouTube_target)
             {
-
-                if ((mutation.target.baseURI).match("watch\\?") != null)
+                if ((mutation.target.baseURI).match("watch\\?") !== null)
                 {
 
-                    if (mutation.target.className.match('page-loaded') != null)
-                    {
+                    //if (mutation.target.className.match('page-loaded') !== null)
+                    //{
                         doAtLoad();
-                    }
+                    //}
 
                 } else {
                     console.log('This is not a video page');
@@ -216,8 +212,6 @@ bodyObserver = new MutationObserver(function (mutations) {
     });
 });
 bodyObserver.observe(document.body, { attributes: true, subtree: false });
-
-
 
 
 function handleError(error) {
