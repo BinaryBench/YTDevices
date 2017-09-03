@@ -1,7 +1,7 @@
 {
   "name":"Youtube Output Devices",
   "short_name":"Yt Devices",
-  "version":"0.1",
+  "version":"0.2",
   "manifest_version":2,
   "description":"This extension allows you to select an output audio device for each youtube video you are watching.",
   "content_scripts": [
